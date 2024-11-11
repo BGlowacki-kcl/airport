@@ -1,0 +1,11 @@
+{% extends 'Authentication/base.html' %}
+
+{% block content %}
+
+    <br>
+    <hr>
+    <br>
+    <h4>Logged out successfully</h4>
+    <p><a href="{% url 'Authentication:' %}">Go to main page</a> or <a href="{% url 'Authentication:login' %}">login again</a></p>
+
+{% endblock %}

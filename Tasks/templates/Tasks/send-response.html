@@ -1,0 +1,19 @@
+{% extends 'Users/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <br>
+    <div class="container bg-light shadow-md p-5 form-layout">
+        <h1>Answer to the report on {{ report.task.name }} task!</h1>
+        <h4> {{ report.message }} - {{ report.worker }}</h4>
+        <br>
+        <form method="post" autocomplete="off">
+            {% csrf_token %}
+            {{form|crispy}}
+            <br>
+            <button type="submit" class="btn btn-success">Report</button>
+        </form>
+    </div>
+
+{% endblock %}

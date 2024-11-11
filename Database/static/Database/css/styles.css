@@ -1,0 +1,13 @@
+.rectangle{
+    width: 100%;
+    height: 30px;
+    background-color: #78c2ad;
+}
+
+#checkbox-container{
+    display: inline-flex;
+    align-items: center;
+}
+#checkbox{
+    margin-right: 5px;
+}

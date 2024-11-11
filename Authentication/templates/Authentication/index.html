@@ -1,0 +1,18 @@
+{% extends 'Authentication/base.html' %}
+
+{% block body_class %}no-scroll{% endblock %}
+
+{% block content %}
+<div class="container-fluid fading-background">
+    <div class="home-text-my">
+        <h1>Welcome on board!</h1>
+        <br><br>
+        <h4 style="text-align: justify;">Join the most poweful Airport management tool and lead in the air industry, without staying behind. <strong style="color: rgb(59, 158, 115);">Set up your account for free today</strong> and never worry about missed flights or lack of customers.</h4>
+        <br>
+        <div id="buttons-home">
+            <a class="btn btn-primary btn-lg" href="{% url 'Authentication:register' %}">Register</a>
+            <a class="btn btn-info btn-lg" href="{% url 'Authentication:about' %}">Find out more</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

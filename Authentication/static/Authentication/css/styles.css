@@ -1,0 +1,154 @@
+.no-scroll{
+    overflow: hidden;
+}
+.home-text-my{
+    margin-left:30px;
+    width: 40%;
+    align-items: center;
+}
+.home-text-my h1{
+    font-weight: bold;
+    color: black;
+}
+.fading-background{
+    position: relative;
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0)), url('../img/home-bg.jpeg') no-repeat center center;
+    height: 100vh;
+    background-size: 120%;
+    align-items: center;
+    display: flex;
+    animation: gradient-animation 20s ease infinite; /* Add animation */
+}
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+.navbar-my{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding-top: 7px;
+    z-index: 1000;
+    /* height: 60px; */
+}
+.navbar-my a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+}
+.my-brand{
+    display: block;
+}
+#buttons-home{
+    padding-top: 40px;
+    align-items: center;
+    display: flex;
+}
+#buttons-about{
+    /* padding-top: 10px; */
+    align-items: center;
+}
+#buttons-home a{
+    margin-left: 50px;
+}
+.my-brand:hover{
+    color: rgb(138, 255, 204);
+}
+.container-fluid{
+    padding: 0px;
+}
+.about-1{
+    position: relative;
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0)), url('../img/about-bg1.jpeg') no-repeat center center;
+    height: 100vh;
+    background-size: 120%;
+    align-items: center;
+    display: flex;
+    animation: gradient-animation 20s ease infinite; /* Add animation */
+}
+#about-roles{
+    padding-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    width: 100%;
+    height: 400px;
+}
+.one-role{
+    display: inline-block;
+    flex: 1;
+    margin: 5px;
+    border: 4px solid grey;
+    border-radius:15px;
+    background-color: #e9e9e9;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: flex 0.5s ease;
+}
+.profile-img{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 15px;
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
+}
+#about-roles{
+    background-color: #deffef;
+}
+.about-functionality-text{
+    margin-left:30px;
+    width: 70%;
+    align-items: center;
+}
+#headline{
+    font-weight: bold;
+    color: black;
+}
+.one-role:hover .profile-img{
+    opacity: 1;
+}
+.one-role:hover{
+    flex: 1.3;
+}
+#about-functionality{
+    background-color: #deffef;
+    padding: 10px;
+    min-height: calc(100vh - 60px);
+    height: calc(100vh - 60px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#about-functionality-text{
+    width: calc(100vw - 40px);
+    justify-content: center;
+    align-items: center;
+}       
+#functionality-text{
+    width: 50vw;
+    display: inline-block;
+    margin-right: 60px;
+    margin-left: 40px;
+}
+#functionality-image{
+    width: 22vw;
+}
+#functionality-container{
+    display: flex;
+    align-items: flex-start;
+}
+#button-functionality{
+    margin-top: 40px;
+    margin-left: 40px;
+}

@@ -1,0 +1,31 @@
+{% extends 'Users/base.html' %}
+
+{% block content %}
+
+<br><br>
+<h5> Welcome {{ user.username }}. Search for your favorite flight</h5>
+<hr><br>
+<!-- <a class="btn btn-primary" href="{% url 'Database:create-flight' %}">Create flight</a> -->
+<br><br>
+<table class="table table-hover table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th scope="col">Username</th> <!-- places left -->
+            <th scope="col">Tickets bought</th>
+            <th scope="col">Show passenger</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if passengers %}
+            {% for passenger, data in passengers.items %}
+                <tr>
+                    <td>{{ passenger.username }}</td>
+                    <td>{{ data.count }}</td>
+                    <td><a class="btn btn-success btn-sm" href="{% url 'Database:one-passenger-man' data.signed_username %}">Edit</a></td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'Database/base.html' %}
+
+{% block content %}
+
+<br>
+<h2>The flight you are trying to book: </h2>
+<hr><br>
+<table class="table table-hover table-bordered">
+    <tbody>
+                <tr>
+                    <td>Flight number</td>
+                    <td>{{ ticket.flight.flightNumber }}</td>
+                </tr>
+                <tr>
+                    <td>From</td>
+                    <td>{{ ticket.flight.departureAirport.city }} ({{ ticket.flight.departureAirport.ICAO }})</td>
+                </tr>
+                <tr>
+                    <td>Departure time</td>
+                    <td>{{ ticket.flight.departureTime }}</td>
+                </tr>
+                <tr>
+                    <td>To</td>
+                    <td>{{ ticket.flight.arrivalAirport.city }} ({{ ticket.flight.arrivalAirport.ICAO }})</td>
+                </tr>
+                <tr>
+                    <td>Arrival time</td>
+                    <td>{{ ticket.flight.arrivalTime }}</td>
+                </tr>
+                <tr>
+                    <td>Price</td>
+                    <td>{{ ticket.flight.price }}</td>
+                </tr>
+                <tr>
+                    <td>Seat</td>
+                    <td>{{ ticket.seat }}</td>
+                </tr>
+    </tbody>
+</table>
+
+<a href="{% url 'Database:deleted-ticket' %}" class="btn btn-primary" > Delete this ticket! </a>
+
+{% endblock %}

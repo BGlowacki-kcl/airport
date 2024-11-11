@@ -1,0 +1,137 @@
+{% extends 'Users/base.html' %}
+
+{% block content %}
+
+<br><br>
+<h5> Welcome {{ user.username }}. More information about {{ myWorker.username }}!</h5>
+<hr>
+
+<br><br>
+<h3>Reports</h3>
+<br>
+
+{% if reports %}
+<table class="table table-hover table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th scope="col">Task</th>
+            <th scope="col">Issue</th>
+            <th scope="col">Description</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in reports %}
+        <tr>
+            <td>{{ item.report.task.name }}</td>
+            <td>{{ item.report.issue }}</td>
+            <td>{{ item.report.message }}</td>
+            <td>
+                {% if item.report.issue == "Problem with the task" %}
+                    <a class="btn btn-success btn-sm" href="{% url 'Tasks:send-response' item.signed_report_id %}"> Send response </a>
+                {% elif item.report.issue == "Other" %}
+                    <a class="btn btn-success btn-sm" href="{% url 'Tasks:send-response' item.signed_report_id %}"> Send response </a>
+                    
+                    <a class="btn btn-success btn-sm" href="{% url 'Tasks:change-one-assignment' item.signed_report_id %}"> Change assignment</a>
+                {% else %}
+                    <a class="btn btn-success btn-sm" href="{% url 'Tasks:change-one-assignment' item.signed_report_id %}"> Change assignment</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<h4>No flights from this airport!</h4>
+{% endif %}
+
+<br><br>
+<h3>Tasks to do</h3>
+<br>
+
+{% if tasksToDo %}
+<table class="table table-hover table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th scope="col">Flight number</th>
+            <th scope="col">Task</th>
+            <th scope="col">Approved on</th>
+            <th scope="col">Status</th>
+            <th scope="col">Co-workers</th>   
+            <th scope="col">Pending tasks</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in tasksToDo %}
+        <tr>
+            <td>{{ item.task.flight.flightNumber }}</td>
+            <td>{{ item.task.name.name }}</td>
+            <td>{{ item.approvedOn }}</td>
+            <td>{{ item.task.status }}</td>
+            <td>
+                {% if item.coworkers %}
+                    {% for worker in item.coworkers.all %}
+                        {% if worker != myWorker %}
+                            {{ worker.username }} {% if not forloop.last %}, {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td><a class="btn btn-success btn-sm" href="{% url 'Tasks:change-one-assignment-normal' item.signed_task_id %}">See tasks</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<h4>No tasks at this airport!</h4>
+{% endif %}
+
+<br><br>
+
+<h3>Tasks in progress</h3>
+<br>
+
+{% if tasksInProgress %}
+<table class="table table-hover table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th scope="col">Flight number</th>
+            <th scope="col">Task</th>
+            <th scope="col">Approved on</th>
+            <th scope="col">Status</th>
+            <th scope="col">Co-workers</th>   
+            <th scope="col">Pending tasks</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in tasksInProgress %}
+        <tr>
+            <td>{{ item.task.flight.flightNumber }}</td>
+            <td>{{ item.task.name.name }}</td>
+            <td>{{ item.approvedOn }}</td>
+            <td>{{ item.task.status }}</td>
+            <td>
+                {% if item.coworkers %}
+                    {% for worker in item.coworkers.all %}
+                        {% if worker != myWorker %}
+                            {{ worker.username }} {% if not forloop.last %}, {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td><a class="btn btn-success btn-sm" href="{% url 'Tasks:change-one-assignment-normal' item.signed_task_id %}">See tasks</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<h4>No tasks at this airport!</h4>
+{% endif %}
+
+<br><br>
+
+{% endblock %}

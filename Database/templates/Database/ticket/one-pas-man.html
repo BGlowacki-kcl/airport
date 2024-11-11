@@ -1,0 +1,52 @@
+{% extends 'Users/base.html' %}
+
+{% block content %}
+
+    <br><br>
+    <div class="card">        
+        <div class="card-body">
+
+            <strong>
+                {{passenger.username}}
+            </strong>
+            <hr>
+
+            <table class="table table-hover table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Flight number</th> <!-- places left -->
+                        <th scope="col">Departure</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Arrival</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Seat</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if tickets %}
+                        {% for item in tickets %}
+                            <tr>
+                                <td>{{ item.ticket.flight.flightNumber }}</td>
+                                <td>{{ item.ticket.flight.departureAirport.city }} ({{ item.ticket.flight.departureAirport.ICAO }})</td>
+                                <td>{{ item.ticket.flight.departureTime }}</td>
+                                <td>{{ item.ticket.flight.arrivalAirport.city }} ({{ item.ticket.flight.arrivalAirport.ICAO }})</td>
+                                <td>{{ item.ticket.flight.arrivalTime }}</td>
+                                <td>{{ item.ticket.seat }}</td>
+                                <td>{{ item.ticket.price }}</td>
+                                <td><a class="btn btn-primary btn-sm" href="{% url 'Database:man-edit-pas' item.signed_ticket_id %}">Edit</a></td>
+                                <td><a class="btn btn-danger btn-sm" href="{% url 'Database:man-delete-pas' item.signed_ticket_id %}">Delete</a></td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <br>
+
+{% endblock %}

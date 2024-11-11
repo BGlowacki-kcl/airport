@@ -1,0 +1,89 @@
+{% extends 'Users/base.html' %}
+
+{% block content %}
+
+<br><br>
+<h5> Welcome {{ user.username }}. See all the planned flights for your airport</h5>
+<hr>
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="choice">Select an airport: </label>
+    <select name="choice" id="choice" class="form-control-sm">
+        {% for airport in airports %}
+            <option value="{{ airport }}" {% if airport.name == selected_airport %} selected  {% endif %}>{{ airport }}</option>
+        {% endfor %}
+    </select>
+    &nbsp;
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<br><br>
+<h3>Arrivals</h3>
+<br>
+
+{% if arrivals %}
+<table class="table table-hover table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th scope="col">Flight number</th>
+            <th scope="col">Departure</th>
+            <th scope="col">Time</th>
+            <th scope="col">Arrival</th>
+            <th scope="col">Time</th>
+            <th scope="col">Pending tasks</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in arrivals %}
+        <tr>
+            <td>{{ item.flight.flightNumber }}</td>
+            <td>{{ item.flight.departureAirport.city }} ({{ item.flight.departureAirport.ICAO }})</td>
+            <td>{{ item.flight.departureTime }}</td>
+            <td>{{ item.flight.arrivalAirport.city }} ({{ item.flight.arrivalAirport.ICAO }})</td>
+            <td>{{ item.flight.arrivalTime }}</td>
+            <td><a class="btn btn-success btn-sm" href="{% url 'Users:dashboard'%}">See tasks</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<h4>No flights from this airport!</h4>
+{% endif %}
+
+
+<br><br>
+
+<h3>Departures</h3>
+<br>
+
+{% if departures %}
+<table class="table table-hover table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th scope="col">Flight number</th>
+            <th scope="col">Departure</th>
+            <th scope="col">Time</th>
+            <th scope="col">Arrival</th>
+            <th scope="col">Time</th>   
+            <th scope="col">Pending tasks</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in departures %}
+        <tr>
+            <td>{{ item.flight.flightNumber }}</td>
+            <td>{{ item.flight.departureAirport.city }} ({{ item.flight.departureAirport.ICAO }})</td>
+            <td>{{ item.flight.departureTime }}</td>
+            <td>{{ item.flight.arrivalAirport.city }} ({{ item.flight.arrivalAirport.ICAO }})</td>
+            <td>{{ item.flight.arrivalTime }}</td>
+            <td><a class="btn btn-success btn-sm" href="{% url 'Users:dashboard'%}">See tasks</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<h4>No flights to this airport!</h4>
+{% endif %}
+
+{% endblock %}

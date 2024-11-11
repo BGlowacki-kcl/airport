@@ -1,0 +1,20 @@
+{% extends 'Database/base.html' %}
+
+{% block content %}
+
+    <br>
+    <h3>Final price of the ticket is: &nbsp; <b>{{ price }}</b> </h3>
+    <br><hr>
+    <form method="POST" action="{% url 'Database:process_payment_form' %}">
+        {% csrf_token %}
+        <label for="amount"><h4>The amount paid: </h4></label> 
+        <input type="number" id="amount" name="amount" required> <br><br>
+        <div id="checkbox-container">
+            <input type="checkbox" checked="checked" id="checkbox" required/> 
+            <h5>I agree to all the terms.</h5>
+        </div>
+        <br> <br>
+        <button type="submit" class="btn btn-primary"> Submit </button>
+    </form>
+
+{% endblock %}

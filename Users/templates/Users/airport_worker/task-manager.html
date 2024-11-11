@@ -1,0 +1,71 @@
+{% extends 'Users/base.html' %}
+
+{% block content %}
+
+<h2>Hello, {{ user.username }}. You can see your tasks here.</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="choice">Select an airport: </label>
+    <select name="choice" id="choice" class="form-control-sm">
+        {% for airport in airports %}
+            <option value="{{ airport }}" {% if airport.name == selected_airport %} selected  {% endif %}>{{ airport }}</option>
+        {% endfor %}
+    </select>
+    &nbsp;
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+<br><br>
+<h3>Reports</h3>
+<br>
+
+{% if tasks %}
+<table class="table table-hover table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th scope="col">Flight number</th>
+            <th scope="col">Action on</th>
+            <th scope="col">Task</th>
+            <th scope="col">Co-workers</th>
+            <th scope="col">Status</th>
+            <th scope="col">Report</th>
+            <th scope="col">Done</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in tasks %}
+        <tr>
+            <td>{{ item.task.flight.flightNumber }}</td>
+            <td>{{ item.actionOn }}</td>
+            <td>{{ item.task.name.name }}</td>
+            <td>
+                {% if item.coworkers %}
+                    {% for worker in item.coworkers %}
+                        {{ worker.username }} {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td {% if item.task.status == 'toDo' %} style="background-color: red;" {% elif item.task.status == 'inProgress' %} style="background-color: yellow;" {% else %} style="background-color: green;" {% endif %}>{{ item.task.status }}</td>
+            <td><a class="btn btn-danger btn-sm" href="{% url 'Tasks:task-report' item.signed_task_id %}">Report({{ item.reports_responded }}/{{ item.reports }})</a></td>
+            <td><a class="btn btn-success btn-sm" href="{% url 'Tasks:task-done' item.signed_task_id %}">
+                {% if item.task.status == "toDo" %}
+                    In progress
+                {% elif item.task.status == "inProgress" %}
+                    Done
+                {% else %}
+                    Hide
+                {% endif %}
+            </a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<h4>No tasks at this airport!</h4>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends 'Users/base.html' %}
+
+{% load crispy_forms_tags %}
+{{form.meida}}
+
+{% block content %}
+
+<br>
+<h2>Hello, {{ user.username }}. You can approve flights here and set tasks for workers</h2>
+<hr><br>
+<h4>Flights to approve</h4>
+<br>
+<form method="get" class="form-check form-inline">
+    {{ form.hideDone|as_crispy_field }}
+    &nbsp; &nbsp;
+    <button type="submit" class="btn btn-info">Filter</button>
+</form>
+{% if approvals %}
+<br>
+<table class="table table-hover table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th scope="col">Flight number</th> <!-- places left -->
+            <th scope="col">Approved on</th>
+            <th scope="col">load luggage</th>
+            <th scope="col">refuel</th> 
+            <th scope="col">push</th>
+            <th scope="col">de-ice</th>
+            <th scope="col">Ready</th>
+            <th scope="col">See</th>
+        </tr>
+    </thead>
+    <tbody>
+            {% for item in approvals %}
+                <tr>
+                    <td>{{ item.approval.flight.flightNumber }}</td>
+                    <td>{{ item.approvedOn }}</td>
+                    {% if item.needs.needsLoad %}
+                        {% if item.workers.load_luggage %} 
+                            <td class="table-light cell" style="--cell-color: {{item.color.load}};">
+                                <div class="color-bar"></div>
+                                {% for worker in item.workers.load_luggage %}
+                                    {{ worker.username }}
+                                    {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>   
+                        {% else %}
+                            <td class="table-warning">No workers assigned!</td>
+                        {% endif %} 
+                    {% else %} 
+                        <td class="table-dark">No need!</td> 
+                    {% endif %}
+
+                    {% if item.needs.needsRefuel %}
+                        {% if item.workers.refuel %} 
+                            <td class="table-light cell" style="--cell-color: {{item.color.load}};">
+                                <div class="color-bar"></div>
+                                {% for worker in item.workers.refuel %}
+                                    {{ worker.username }}
+                                    {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>   
+                        {% else %}
+                            <td class="table-warning">No workers assigned!</td>
+                        {% endif %} 
+                    {% else %} 
+                        <td class="table-dark">No need!</td> 
+                    {% endif %}
+
+                    {% if item.needs.needsPush %}
+                        {% if item.workers.push %} 
+                            <td class="table-light cell" style="--cell-color: {{item.color.load}};">
+                                <div class="color-bar"></div>
+                                {% for worker in item.workers.push %}
+                                    {{ worker.username }}
+                                    {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>   
+                        {% else %}
+                            <td class="table-warning">No workers assigned!</td>
+                        {% endif %} 
+                    {% else %} 
+                        <td class="table-dark">No need!</td> 
+                    {% endif %}
+
+                    {% if item.needs.needsDeice %}
+                        {% if item.workers.deice %} 
+                            <td class="table-light cell" style="--cell-color: {{item.color.load}};">
+                                <div class="color-bar"></div>
+                                {% for worker in item.workers.deice %}
+                                    {{ worker.username }}
+                                    {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>   
+                        {% else %}
+                            <td class="table-warning">No workers assigned!</td>
+                        {% endif %} 
+                    {% else %} 
+                        <td class="table-dark">No need!</td> 
+                    {% endif %}
+
+                    {% if item.ready %} <td class="table-primary">{{ item.ready }}</td> {% else %} <td class="table-light">{{ item.ready }}</td> {% endif %}
+                    <td><a class="btn btn-success btn-sm" href="{% url 'Tasks:flight-to-assign' item.signed_approval_id %}"> Edit </a></td>
+                </tr>
+            {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<br>
+<h3> No flights to approve! </h3>
+{% endif %}
+<br>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'Authentication/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <body>
+        <div class="container bg-light shadow-md p-5 form-layout mt-5 mb-5">
+        
+            <h3> Create your account </h3>
+            <h5> See the revolution of Air industry now!</h5>
+            <hr>
+            <br>
+            <form method="POST" autocomplete="off">
+                {% csrf_token %}
+                {{form.username|as_crispy_field}}
+                <br>
+                {{form.password1|as_crispy_field}}
+                <br>
+                {{form.password2|as_crispy_field}}
+                <br>
+                {{form.role|as_crispy_field}}
+                <br>
+                <button type="submit" class="btn btn-primary w-100 btn-block p-2"> Create account &nbsp; </button>
+            </form>
+
+            <br>
+
+            <div class="text-center">
+                <p> Already have an account? </p> 
+                <a href="{% url 'Authentication:login' %}">Login </a>
+            </div>
+
+        </div>
+        <br>
+    </body>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'Users/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <br>
+    <div class="container bg-light shadow-md p-5 form-layout">
+        <h1>Answer on the flight {{ flight.flightNumber }} to {{ flight.pilot }}!</h1>
+        <br>
+        <form method="post" autocomplete="off">
+            {% csrf_token %}
+            {{form|crispy}}
+            <br>
+            <button type="submit" class="btn btn-danger">Send</button>
+        </form>
+    </div>
+    {% if messages %}
+    {% for message in messages %}
+        <br>
+    <div class="d-flex align-items-center" >
+        {% if message.fromUser == request.user %}
+            <div class="d-inline-block"><small>{{ message.date }}</small></div>
+        {% endif %}
+        <div class="container-sm bg-light d-flex {% if message.fromUser == request.user %} flex-row-reverse {% else %} flex-row {% endif %} shadow-md p-3 w-75 d-inline-block border border-5 rounded">
+            {% if message.answerToFlight %}
+                {% if message.fromUser == request.user %}
+                    <strong>{{ message.message }}</strong> &nbsp; <i> {{ message.answerToFlight.flightNumber }} - </i>
+                {% else %}
+                    <i>{{ message.answerToFlight.flightNumber }} - </i> &nbsp;  <strong>{{ message.message }}</strong> 
+                {% endif %}
+            {% else %}
+                <strong>{{ message.message }}</strong>
+            {% endif %}
+        </div>
+        {% if message.fromUser != request.user %}
+            <div class="d-inline-block"><small>{{ message.date }}</small></div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% else %}
+    <br>
+    <h2> No messages with this pilot yet! Start a new conversation now!</h2>
+    {% endif %}
+    <br><br>
+
+{% endblock %}

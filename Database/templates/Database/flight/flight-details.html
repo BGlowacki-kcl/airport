@@ -1,0 +1,52 @@
+{% extends 'Database/base.html' %}
+
+{% block content %}
+
+<br>
+<h2>Hello, {{ user.username }}. One flight</h2>
+<hr><br>
+
+<div class="card bg-light shadow-md p-5">
+    <div class="card-body">
+
+        <h3>Flight number: {{ flight.flightNumber }}</h3>
+        <hr><br>
+        <table class="table table-hover table-bordered">
+            <tbody>
+                <tr>
+                    <td>Flight number</td>
+                    <td>{{ flight.flightNumber }}</td>
+                </tr>
+                <tr>
+                    <td>From</td>
+                    <td>{{ flight.departureAirport.city }} ({{ flight.departureAirport.ICAO }})</td>
+                </tr>
+                <tr>
+                    <td>Departure time</td>
+                    <td>{{ flight.departureTime }}</td>
+                </tr>
+                <tr>
+                    <td>To</td>
+                    <td>{{ flight.arrivalAirport.city }} ({{ flight.arrivalAirport.ICAO }})</td>
+                </tr>
+                <tr>
+                    <td>Arrival time</td>
+                    <td>{{ flight.arrivalTime }}</td>
+                </tr>
+                <tr>
+                    <td>Price</td>
+                    <td>{{ flight.price }}</td>
+                </tr>
+                <tr>
+                    <td>Seat</td>
+                    <td>6A</td>
+                </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-danger" href="{% url 'Tasks:report-flight' %}">Report {% if reportNums %} ({{reportNums}}) {% endif %} </a>
+    </div>
+</div>
+<br><br>
+
+
+{% endblock %}

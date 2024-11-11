@@ -1,0 +1,13 @@
+{% extends 'Database/base.html' %}
+
+{% block content %}
+
+<br>
+<h2>Ticket successfully deleted.</h2> 
+<h4>The 70% of the ticket price is added to your budget. That is: {{ price }}</h4>
+<hr><br>
+<a class="btn btn-primary" href="{% url 'Users:my-tickets' %}">See other tickets</a> 
+&nbsp; &nbsp; 
+<a class="btn btn-primary" href="{% url 'Users:dashboard' %}">Go to dashboard</a>
+
+{% endblock %}

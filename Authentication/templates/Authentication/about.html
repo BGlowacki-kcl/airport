@@ -1,0 +1,76 @@
+{% extends 'Authentication/base.html' %}
+
+{% block body_class %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="about-1">
+        <div class="home-text-my">
+            <h1>All about us!</h1>
+            <br><br>
+            <h4 style="text-align: justify;">We are the first fast growing airport and airline management system. Discover all the possibilities of success with us. Go down and see what we offer.</h4>
+            <br>
+            <div id="buttons-home">
+                <h4 style="color: rgb(59, 158, 115); font-weight: 800;">Discover all the available roles!</h4>
+                <a class="btn btn-primary btn-lg" href="#about-roles">See more</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="about-roles">
+        <div class="one-role">
+            <img src="../../static/Authentication/img/pas.jpeg" alt="passenger profile" class="profile-img">
+            <br>
+            <h4 style="margin-top: 10px;"><strong>PASSENGER</strong></h4>
+            <h6>Let's go on the adventure!</h6>
+            <br>
+            <button class="change-content-button btn btn-info" data-headline="Passenger" data-text="As a passenger you are able to search for available flights with all the applied filters. You can book flights provided the amount you want to pay. You can return tickets that you don't need anymore. Each passenger has their own wallet with returned money and the overpaid flights." data-image="../../static/Authentication/img/pas.jpeg">Check out</button>
+        </div>
+        <div class="one-role">
+            <img src="../../static/Authentication/img/pil.jpeg" alt="pilot profile" class="profile-img">
+            <br>
+            <h4 style="margin-top: 10px;"><strong>PILOT</strong></h4>
+            <h6>Let's fly to another country!</h6>
+            <br>
+            <button class="change-content-button btn btn-info" data-headline="Pilot" data-text="As a pilot you are able to view all the flights in the airline you work for. You can message other pilot working for the same airline or report any issues with your fligths. Also, a pilot is responsible for changing flight status from before by during to after." data-image="../../static/Authentication/img/pil.jpeg">Check out</button>
+        </div>
+        <div class="one-role">
+            <img src="../../static/Authentication/img/ap-m.jpeg" alt="airport manager profile" class="profile-img">
+            <br>
+            <h4 style="margin-top: 10px;"><strong>AIRPORT MANAGER</strong></h4>
+            <h6>Let's assign tasks to workers!</h6>
+            <br>
+            <button class="change-content-button btn btn-info" data-headline="Airport manager" data-text="As an airport manager you are responsible for approving all the flights coming to or from your airport providing information if push is needed. Then, airport worker has to assign workers to all the tasks that are neccessary for the flight (push, refuel, load luggage, deice). Also, you can answer all the reports sent by airport workers, by sending a direct message or changing assignment." data-image="../../static/Authentication/img/ap-m.jpeg">Check out</button>
+        </div>
+        <div class="one-role">
+            <img src="../../static/Authentication/img/ap-w.jpeg" alt="airport worker profile" class="profile-img">
+            <br>
+            <h4 style="margin-top: 10px;"><strong>AIRPORT WORKER</strong></h4>
+            <h6>Let's refuel another plane!</h6>
+            <br>
+            <button class="change-content-button btn btn-info" data-headline="Airport worker" data-text="As an airport worker you are able to view your task manager after choosing one of the airports you are working for. You are required to change the task status and report tasks giving the problem. You can also see the response of the airport manager for previous rpeorts." data-image="../../static/Authentication/img/ap-w.jpeg">Check out</button>
+        </div>
+        <div class="one-role">
+            <img src="../../static/Authentication/img/al-m.jpeg" alt="airline manager profile" class="profile-img">
+            <br>
+            <h4 style="margin-top: 10px;"><strong>AIRLINE MANAGER</strong></h4>
+            <h6>Let's create one more flight!</h6>
+            <br>
+            <button class="change-content-button btn btn-info" data-headline="Airline manager" data-text="As an airline manager you are able to create new flights or edit existing ones. You also have access to all your passengers and to all the tickets that they bought. Airline manager can change passenger's seat or rebook the fligth for them (on the same way). You can also return the passenger's ticket on their wish." data-image="../../static/Authentication/img/al-m.jpeg">Check out</button>
+        </div>
+    </div>
+
+    <div id="about-functionality">
+        <div id="about-functionality-text">
+            <h1 id="headline">Find out more about ---choose role---</h1>
+            <br><br>
+            <div id="functionality-container">
+                <h4 id="functionality-text">---Role description---</h4>
+                <img src="../../static/Authentication/img/emptyImage.png" alt="chosen image" id="functionality-image">
+            </div>
+            <a class="btn btn-info btn-lg" href="{% url 'Authentication:register' %}" id="button-functionality">Set up account now!</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

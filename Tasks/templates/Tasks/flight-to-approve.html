@@ -1,0 +1,26 @@
+{% extends 'Users/base.html' %}
+
+{% block content %}
+<br>
+<h2>Hello, {{ user.username }}. You can approve flight and assign tasks.</h2>
+<hr><br>
+{% for app in approve.tasksToDo.all %}
+    <h5>{{ app }}</h5>
+{% endfor %}
+<br>
+{% if not ifDeparture %}
+    <h4>Plane is arriving here. Temperature not needed</h4>
+{% else %}
+    {% if hasTemp %}
+        <h4>The tepmerature is: {{ temp }}</h4>
+    {% else %}
+        <h4>Could not get the temperature, please provide it</h4>
+    {% endif %}
+{% endif %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock %}

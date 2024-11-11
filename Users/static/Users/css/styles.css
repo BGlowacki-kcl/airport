@@ -1,0 +1,54 @@
+.my-brand:hover{
+    color: rgb(138, 255, 204);
+}
+.my-navbar-size{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.my-back-button{
+    background-color: #78c2ad; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+.my-back-button:hover{
+    background-color: #56cc9d;
+}
+.my-container-restricted{
+    text-align: center;
+    margin-top: 50px;
+}
+
+.form-inline{
+    display: flex;
+    align-items: center;
+}
+.form-inline .btn {
+    margin-left: 10px;
+}
+.form-inline .form-group {
+    margin-bottom: 24px;
+}
+
+.select2-container--default .select2-selection--multiple {
+    min-width: 400px;  /* Adjust this value to your needs */
+}
+.cell {
+    position: relative;
+}
+.color-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 20px;
+    opacity: 0.2;
+    background-color: var(--cell-color, grey); /* Change this color as needed */
+}

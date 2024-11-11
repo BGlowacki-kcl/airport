@@ -1,0 +1,239 @@
+{% extends 'Database/base.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select a Seat</title>
+    <style>
+        .seat {
+            all: initial;
+            width: 30px;
+            height: 30px;
+            background-color: #ccc;
+            margin: 2px 5px; 
+            text-align: center;
+            line-height: 30px;
+            cursor: pointer;
+        }
+        .seat:hover{
+            box-shadow: 2px 2px;
+            background-color: #9a9a9a;
+        }
+        .seat.margin{
+            margin-left: 25px; 
+        }
+        .seat.selected {
+            background-color: #6c7ae0;
+        }
+        .seat.reserved {
+            background-color: #ff6b6b;
+            cursor: not-allowed;
+        }
+        seat.horSpace{
+            margin-top: 100px;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .seat-map {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* width: calc({{ margins }}px * 25 + {{ seatsInRow }}px * 30) */
+            box-sizing: border-box;
+        }
+        .legend {
+            margin-top: 20px;
+            margin-bottom: 50px;   
+        }
+        .legend span {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        .legend .available {
+            background-color: #ccc;
+        }
+        .legend .selected {
+            background-color: #6c7ae0;
+        }
+        .legend .reserved {
+            background-color: #ff6b6b;
+        }
+        #head-text{
+            text-align: center;
+            width: 100%;
+            font-size: 36px;
+            color: black;
+        }
+        #left-section{
+            width: 60%;
+            float: left;
+            text-align: center;
+            border-radius: 10px;
+            border: 1px solid black;
+            background-color: #defcea;
+            margin: 20px;
+            padding: 20px; 
+        }
+        #right-section{
+            float: left;
+            border: 2px solid black;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #defcea;
+        }
+        .plane {
+            position: relative;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 300px 300px 0 0;
+            box-sizing: border-box;
+            width: 400px;
+            overflow: hidden; /* Ensure content doesn't overflow the container */
+            border: 1px solid black;
+            padding-bottom: 20px;
+        }
+        .cockpit {
+            background-color: white;
+            height: 150px;
+            border-radius: 200px 200px 0 0;
+            text-align: center;
+            line-height: 50px;
+            color: white;
+            font-weight: bold;
+        }
+        #currentSeat{
+            padding: 20px;
+            color: black;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid" id="container">
+        <div id="left-section">
+            <br><br>
+            <div id="head-text">
+                <p>Choose your seat in {{ plane }}</p>
+            </div>
+            <div class="plane">
+                <div class="cockpit"></div>
+                <div class="seat-map" id="seat-map">
+                    <!-- Seat map will be generated here -->
+                </div>
+            </div>
+        </div>
+        <div id="right-section">
+            <div class="legend">
+                <span class="seat available"></span> Available
+                <span class="seat selected"></span> Selected
+                <span class="seat reserved"></span> Reserved
+            </div>
+            <h3 id="currentSeat" >Current seat: {{ initialSeat }}</h3>
+            <form id="save-seat-form" method="post" action="{% url 'Database:save-seat-to-session' %}">
+                {% csrf_token %}
+                <input type="hidden" id="selected-seat-input" name="seat" value="{{ initialSeat }}">
+                <button type="submit" id="submit-seat" class="btn btn-primary">Save Selected Seat</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const rows = `{{ rows }}`; // Number of rows
+            const columns = `{{ seatsInRow }}`; // Number of columns
+            const reservedSeats = JSON.parse('{{ seatsOccupied|escapejs }}'); // Example of reserved seats
+            const seatConfiguration = '{{ seatConfiguration }}';
+            const rowSpace = 10;
+            var currentSeatDiv;
+            var currentSeat = "{{ initialSeat }}";
+            var seatIndex = 0;
+            var currentIndex = 0;
+            var seatsChoosen = 0;
+            const submitButton = document.getElementById('submit-seat');
+
+            const seatMap = document.getElementById('seat-map');
+
+            for (let row = 1; row <= rows; row++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'row';
+                
+                const rowLabel = document.createElement('div');
+                if (row < 10){
+                    rowLabel.textContent = `0${row}`;
+                } else {
+                    rowLabel.textContent = `${row}`;
+                }
+                
+                //rowLabel.style.marginBottom = '10px'; 
+                rowDiv.appendChild(rowLabel);
+
+                currentIndex = 0;
+                seatIndex = 0;
+                for (let col = 1; col <= columns; col++) {
+                    const seatDiv = document.createElement('div');
+                    seatDiv.className = 'seat';
+                    seatDiv.dataset.seat = `${row}_${col}`;
+                    seatDiv.textContent = `${row}${String.fromCharCode(64 + col)}`;
+
+                    if(seatDiv.textContent == currentSeat){
+                        currentSeatDiv = seatDiv;
+                        seatDiv.classList.add('selected');
+                    }
+
+                    if(row % rowSpace == 0){
+                        seatDiv.classList.add('horSpace');
+                    }
+                    if(currentIndex == seatConfiguration[seatIndex]){
+                        seatDiv.classList.add('margin');
+                        currentIndex = 0;
+                        seatIndex++;
+                    }
+                    currentIndex++;
+
+                    if (reservedSeats.includes(seatDiv.textContent)) {
+                        seatDiv.classList.add('reserved');
+                    }
+
+                    seatDiv.addEventListener('click', (e) => {
+                        if (!e.target.classList.contains('reserved')) {
+                            if(e.target.classList.contains('selected')){
+                                document.getElementById("selected-seat-input").value = "";
+                                currentSeat = "";
+                                currentSeatDiv = null;
+                                document.getElementById("currentSeat").textContent = "Choose a seat!";
+                                submitButton.disabled = true;
+                            } else {
+                                if(currentSeatDiv != null){
+                                    currentSeatDiv.classList.remove('selected');
+                                }
+                                currentSeat = seatDiv.textContent;
+                                document.getElementById("currentSeat").textContent = "Current seat: " + currentSeat;
+                                document.getElementById("selected-seat-input").value = currentSeat;
+                                currentSeatDiv = seatDiv;
+                                submitButton.disabled = false;
+                            }
+                            e.target.classList.toggle('selected');
+                        }
+                    });
+
+                    rowDiv.appendChild(seatDiv);
+                }
+
+                seatMap.appendChild(rowDiv);
+            }
+        });
+    </script>
+</body>
+</html>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'Users/base.html' %}
+
+{% block content %}
+
+<br>
+<h2>Hello, {{ user.username }}. You can approve flights here and set tasks for workers</h2>
+<hr><br>
+<h4>Flights to approve</h4>
+<br>
+{% if toApprove %}
+<table class="table table-hover table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th scope="col">Flight number</th> <!-- places left -->
+            <th scope="col">Departure time</th>
+            <th scope="col">Arrival time</th>
+            <th scope="col">Approve on</th> 
+            <th scope="col">Approve</th>
+        </tr>
+    </thead>
+    <tbody>
+            {% for item in toApprove %}
+                <tr>
+                    <td>{{ item.approve.flight.flightNumber }}</td>
+                    <td>{{ item.approve.flight.departureTime }}</td>
+                    <td>{{ item.approve.flight.arrivalTime }}</td>
+                    <td>
+                        {% if item.approve.arrivalApprove and item.approve.flight.arrivalAirport == managedAirport %}
+                            Arrival
+                        {% elif item.approve.departureApprove and item.approve.flight.departureAirport == managedAirport %}
+                            Departure
+                        {% else %}
+                            Nothing
+                        {% endif %}
+                    </td>
+                    <td><a class="btn btn-success btn-sm" href="{% url 'Tasks:flight-to-approve' item.signed_flight_id %}">Approve</a></td>
+                </tr>
+            {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<br>
+<h3> No flights to approve! </h3>
+{% endif %}
+<br>
+
+{% endblock %}

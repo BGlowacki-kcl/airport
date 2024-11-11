@@ -1,0 +1,61 @@
+{% extends 'Users/base.html' %}
+
+{% load crispy_forms_tags %} 
+
+{% block content %}
+
+    <br><br>
+    <div class="card">        
+        <div class="card-body">
+
+            <strong>
+                {{ ticket.passenger.username }}
+            </strong>
+            <hr>
+
+            <!-- change seat -->
+
+            <form method="POST" autocomplete="off">
+                {% csrf_token %}
+                <div class="form-inline">
+                    {{form|crispy}}
+                    <button type="submit" class="btn btn-info">Update seat</button>
+                </div>
+            </form>
+            <br><hr><br><br>
+            <!-- reschedule flight -->
+            <h4>Reschedule the flight</h4>
+            {% if flights %}
+            <h6>All flights available from <i>{{ ticket.flight.departureAirport.city }}({{ ticket.flight.departureAirport.ICAO }})</i> to <i>{{ ticket.flight.arrivalAirport.city }}({{ ticket.flight.arrivalAirport.ICAO }})</i></h6>
+            <table class="table table-hover table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Flight number</th>
+                        <th scope="col">Departure Time</th>
+                        <th scope="col">Arrival Time</th>
+                        <th scope="col">Price Difference</th>
+                        <th scope="col">Re-Book</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for flight, difference, signed_flight_number in flights %}
+                        <tr>
+                            <td>{{ flight.flightNumber }}</td>
+                            <td>{{ flight.departureTime }}</td>
+                            <td>{{ flight.arrivalTime }}</td>
+                            <td>{{ difference }}</td>
+                            <td><a class="btn btn-success btn-sm" href="{% url 'Database:reschedule-man' signed_flight_number %}">Book</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <h3>No flights on the given route available</h3>
+            {% endif %}
+        </div>
+    </div>
+
+    <br>
+
+{% endblock %}

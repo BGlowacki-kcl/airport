@@ -1,0 +1,57 @@
+{% extends 'Users/base.html' %}
+
+{% block content %}
+<br>
+<h2>Hello, {{ user.username }}. Here are your flights.</h2>
+<hr><br>
+
+{% for airline, flights_list in flights.items %}
+<h2>{{ airline.name }}</h2>
+    {% if flights_list %}
+        <table class="table table-hover table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Flight number</th>
+                    <th scope="col">Departure</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Arrival</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Time to departure</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Update</th>
+                    <th scope="col">Report</th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for item in flights_list %}
+                        <tr>
+                            <td>{{ item.flight.flightNumber }}</td>
+                            <td>{{ item.flight.departureAirport.city }} ({{ item.flight.departureAirport.ICAO }})</td>
+                            <td>{{ item.flight.departureTime }}</td>
+                            <td>{{ item.flight.arrivalAirport.city }} ({{ item.flight.arrivalAirport.ICAO }})</td>
+                            <td>{{ item.flight.arrivalTime }}</td>
+                            <td class="{% if item.if_should_departure %} bg-danger {% else %} bg-light {% endif %}">
+                                {{ item.time_text }}{% if item.if_should_departure %} (past) {% endif %}
+                            </td>
+                            {% if item.flight.status == 'Before' %}
+                                <td class="bg-primary" >{{ item.flight.status }}</td>
+                            {% else %}
+                                <td class="bg-info">{{ item.flight.status }}</td>
+                            {% endif %}
+                            <td><a class="btn btn-success btn-sm" href="{% url 'Database:change-flight-status' item.signed_flight_id %}">
+                                {% if item.flight.status == 'Before' %}
+                                    During
+                                {% else %}
+                                    After   
+                                {% endif %}
+                            </a></td>
+                            <td><a class="btn btn-danger btn-sm" href="{% url 'Tasks:report-flight-with-id' item.signed_flight_id %}">Report</a></td>
+                        </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endfor %}
+
+
+{% endblock %}

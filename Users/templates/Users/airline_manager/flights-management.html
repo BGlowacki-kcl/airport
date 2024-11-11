@@ -1,0 +1,39 @@
+{% extends 'Users/base.html' %}
+
+{% block content %}
+
+<br><br>
+<h5> Welcome {{ user.username }}. Search for your favorite flight</h5>
+<hr><br>
+<a class="btn btn-primary" href="{% url 'Database:create-flight' %}">Create flight</a>
+<br><br>
+<table class="table table-hover table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th scope="col">Flight number</th> <!-- places left -->
+            <th scope="col">Departure</th>
+            <th scope="col">Time</th>
+            <th scope="col">Arrival</th>
+            <th scope="col">Time</th>
+            <th scope="col">Price</th>
+            <th scope="col">Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if flights %}
+            {% for item in flights %}
+                <tr>
+                    <td>{{ item.flight.flightNumber }}</td>
+                    <td>{{ item.flight.departureAirport.city }} ({{ item.flight.departureAirport.ICAO }})</td>
+                    <td>{{ item.flight.departureTime }}</td>
+                    <td>{{ item.flight.arrivalAirport.city }} ({{ item.flight.arrivalAirport.ICAO }})</td>
+                    <td>{{ item.flight.arrivalTime }}</td>
+                    <td>{{ item.flight.price }}</td>
+                    <td><a class="btn btn-success btn-sm" href="{% url 'Database:one-flight-man' item.signed_flight_number %}">Edit</a></td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
+
+{% endblock %}

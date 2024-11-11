@@ -1,0 +1,12 @@
+{% extends 'Database/base.html' %}
+
+{% block content %}
+
+<h2>Hello, {{ user.username }}. Transaction successfull!</h2>
+<br>
+<h3>Money left out of the transaction are added to your account. <i>Balance plus {{leftMoney }}</i></h3>
+<h4>The details has been send to your e-mail.</h4>
+<a class="btn btn-primary" href="{% url 'Users:search-flights' %}">Search another flight</a>
+<a class="btn btn-primary" href="{% url 'Users:my-tickets' %}" >View your tickets</a>
+
+{% endblock %}  

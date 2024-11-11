@@ -1,0 +1,62 @@
+{% extends 'Users/base.html' %}
+
+{% block content %}
+
+<br><br>
+<h5> Welcome {{ user.username }}. See all the planned flights for your airline</h5>
+<hr>
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="choice">Select an airport: </label>
+    <select name="choice" id="choice" class="form-control-sm">
+        {% for airline in airlines %}
+            <option value="{{ airline }}" {% if airline.name == selected_airline %} selected  {% endif %}>{{ airline }}</option>
+        {% endfor %}
+    </select>
+    &nbsp;
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<br><br>
+<h3>Flights</h3>
+<br>
+
+{% if flights %}
+<table class="table table-hover table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th scope="col">Flight number</th>
+            <th scope="col">Departure</th>
+            <th scope="col">Time</th>
+            <th scope="col">Arrival</th>
+            <th scope="col">Time</th>
+            <th scope="col">Status</th>
+            <th scope="col">Contact pilot</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in flights %}
+        <tr>
+            <td>{{ item.flight.flightNumber }}</td>
+            <td>{{ item.flight.departureAirport.city }} ({{ item.flight.departureAirport.ICAO }})</td>
+            <td>{{ item.flight.departureTime }}</td>
+            <td>{{ item.flight.arrivalAirport.city }} ({{ item.flight.arrivalAirport.ICAO }})</td>
+            <td>{{ item.flight.arrivalTime }}</td>
+            <td>{{ item.flight.status }}</td>
+            {% if item.flight.pilot != request.user %}
+                <td><a class="btn btn-success btn-sm" href="{% url 'Tasks:contact-pilot' item.signed_flight_id %}">Contact</a></td>
+            {% else %}
+                <td><a class="btn btn-info btn-sm" href="{% url 'Database:flight-details' item.signed_flight_id %}">Details</a></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<h4>No flights from this airport!</h4>
+{% endif %}
+
+<br><br>
+
+{% endblock %}

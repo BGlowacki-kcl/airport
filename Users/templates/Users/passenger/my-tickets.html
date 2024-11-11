@@ -1,0 +1,34 @@
+{% extends 'Users/base.html' %}
+
+{% block content %}
+
+<h2>Hello, {{ user.username }}. Here are your tickets.</h2> 
+<hr><br>
+<table class="table table-hover table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th scope="col">Flight number</th> <!-- places left -->
+            <th scope="col">Departure</th>
+            <th scope="col">Time</th>
+            <th scope="col">Arrival</th>
+            <th scope="col">Time</th>
+            <th scope="col">Seat</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+            {% for item in tickets %}
+                <tr>
+                    <td>{{ item.ticket.flight.flightNumber }}</td>
+                    <td>{{ item.ticket.flight.departureAirport.city }} ({{ item.ticket.flight.departureAirport.ICAO }})</td>
+                    <td>{{ item.ticket.flight.departureTime }}</td>
+                    <td>{{ item.ticket.flight.arrivalAirport.city }} ({{ item.ticket.flight.arrivalAirport.ICAO }})</td>
+                    <td>{{ item.ticket.flight.arrivalTime }}</td>
+                    <td>{{ item.ticket.seat }}</td>
+                    <td><a class="btn btn-success btn-sm" href="{% url 'Database:delete-ticket' item.signed_ticket_id %}">Delete</a></td>
+                </tr>
+            {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
