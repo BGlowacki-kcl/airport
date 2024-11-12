@@ -177,4 +177,6 @@ CSRF_COOKIE_HTTPONLY = True
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
 
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://airport-kgl3.onrender.com',  # Replace with your actual Render URL
+]
