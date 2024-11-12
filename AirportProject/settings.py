@@ -104,11 +104,12 @@ DATABASES = {
         'NAME': 'airport',
         'USER': 'root',
         'PASSWORD': env('DB_PASSWORD'),
-        'HOST': 'airport.cn428kg2uzak.eu-west-2.rds.amazonaws.com',  # or the hostname where your MySQL server is running
+        'HOST': 'airport.cnkqmg08gi3q.us-east-1.rds.amazonaws.com',  # or the hostname where your MySQL server is running
         'PORT': '3306',      # or the port on which your MySQL server is listening
         'OPTIONS': {
             'ssl': {
-                'ca': os.path.join(os.path.dirname(__file__), 'eu-west-2-bundle.pem'),  # Path to the RDS CA certificate
+                #'ca': os.path.join(os.path.dirname(__file__), 'us-east-1-bundle.pem'),  # Path to the RDS CA certificate
+                'ca': '/etc/secrets/bundle.pem',  # Path to the RDS CA certificate
             }
         }
     }
