@@ -1,13 +1,14 @@
 import datetime
 import logging
 from django.utils import timezone
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from Authentication.models import User
-from Database.models import Flight, Ticket, Airline, Airport, WorksForAirline
+from Database.models import Flight, Ticket, Airline, Airport, WorksForAirline, CanFlyFrom, CanFlyTo
 from Tasks.models import Approval, RegularTasks, Task, Report
 from django.db.models import Q
 from django.core.signing import Signer
-from .forms import taskAssignmentFilter
+from .forms import taskAssignmentFilter, createAirlineForm, createAirportForm
+from .helpers import create_airline, create_airport
 
 def dashboard(request):
     return render(request, "Users/dashboard.html")
@@ -107,7 +108,10 @@ def flight_schedule(request):
 
 # Airport manager
 def flight_approval(request):
-    managedAirport = Airport.objects.get(manager=request.user)
+    try:
+        managedAirport = Airport.objects.get(manager=request.user)
+    except (Airport.DoesNotExist):
+        return create_airport(request, createAirportForm)
     toApprove = Approval.objects.filter((Q(arrivalApprove=True) & Q(flight__arrivalAirport=managedAirport)) | (Q(departureApprove=True) & Q(flight__departureAirport=managedAirport)))
     signer = Signer()
     toApprove_signed = []
@@ -124,7 +128,7 @@ def task_assignment(request):
     try:
         airport = Airport.objects.get(manager=request.user)
     except (Airport.DoesNotExist):
-        return render(request, "Users/restricted-access.html")
+        return create_airport(request, createAirportForm)
     approvals = Approval.objects.filter((Q(flight__arrivalAirport=airport) & Q(arrivalApprove=False)) | (Q(flight__departureAirport=airport) & Q(departureApprove=False)))
     approvals_signed = []
     signer = Signer()
@@ -206,7 +210,7 @@ def workers(request):
     try:
         airport = Airport.objects.get(manager=request.user)
     except Airport.DoesNotExist:
-        return render(request, "Users/restricted-access.html")
+        return create_airport(request, createAirportForm)
     workers = User.objects.filter(worksforairport__airport=airport)
     workers_signed = []
     signer = Signer()
@@ -230,7 +234,7 @@ def flight_management(request):
     try:
         airline = Airline.objects.get(manager=request.user)
     except Airline.DoesNotExist:
-        return render(request, "Users/restricted-access.html")
+        return create_airline(request, createAirlineForm)
     all_flights = Flight.objects.filter(airline=airline)
     signer = Signer()
     signed_flights = []
@@ -247,7 +251,7 @@ def passengers(request):
     try:
         airline = Airline.objects.get(manager=request.user)
     except Airline.DoesNotExist:
-        return render(request, "Users/restricted-access.html")
+        return create_airline(request, createAirlineForm)
     all_flights = Flight.objects.filter(airline=airline)
     all_tickets = Ticket.objects.filter(flight__in=all_flights)
     passengers = {}
@@ -266,6 +270,25 @@ def passengers(request):
     }
     context = {'passengers': signed_passengers}
     return render(request, "Users/airline_manager/passengers.html", context=context)
+
+def add_routes(request):
+    airline = get_object_or_404(Airline, manager=request.user)
+
+    all_airports = set(Airport.objects.all())
+    to_airports = set(CanFlyTo.objects.filter(airline=airline).values_list('airport', flat=True))
+    from_airports = set(CanFlyFrom.objects.filter(airline=airline).values_list('airport', flat=True))
+    
+    available_to_airports = all_airports - to_airports
+    available_from_airports = all_airports - from_airports
+
+    context = {
+        'airline': airline,
+        'to_airports': to_airports,
+        'from_airports': from_airports,
+        'available_to_airports': available_to_airports,
+        'available_from_airports': available_from_airports,
+    }
+    return render(request, 'Users/airline_manager/add_routes.html', context)
 
 # Pilot
 def my_flights(request):

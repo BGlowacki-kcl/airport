@@ -1,0 +1,26 @@
+{% extends 'Users/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<br><br>
+<h5> One more important step {{ user.username }}. Create airport to manage it!</h5>
+<hr><br>
+
+<div class="card bg-light shadow-md p-5">
+    <div class="card-body">
+        <form method="POST" autocomplete="off">
+            {% csrf_token %}
+            {{form|crispy}}
+            <br>
+            <button type="submit" class="btn btn-info">Create airport</button>
+        </form>
+    </div>
+</div>
+<br>
+<a href="{% url 'Users:dashboard' %}" class="btn btn-secondary" > Return </a> &nbsp;
+<br><br>
+
+
+{% endblock %}

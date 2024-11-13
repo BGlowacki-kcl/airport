@@ -31,7 +31,6 @@ class UserAccessMiddleware:
                     roleName = request.user.role.name
                     print(roleName)
                     if prefixes.get(roleName) not in request.path.split('/') and not request.path.endswith('/dashboard') and not request.path.endswith('/profile'):
-                        print('--------------------', request.path)
                         return render(request, "Users/restricted-access.html") #HttpResponseForbidden("You don't have permission to access this page.")
         return self.get_response(request)
  

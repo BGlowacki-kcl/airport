@@ -4,4 +4,12 @@
 
 <h2>Hello, {{ user.username }}. I know you are a {{ user.role }}</h2>
 
+
+<a class="btn btn-primary" href="{% url 'Users:add-routes' %}" > Update routes! </a>
+<a class="btn btn-primary" href="{% url 'Users:flight-management' %}" > Create airline! </a>
+
+
+<a class="btn btn-primary" href="{% url 'Users:flight-approval' %}" > Create airport! </a>
+
+
 {% endblock %}

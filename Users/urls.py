@@ -20,6 +20,7 @@ urlpatterns = [
     # Airline manager
     path('al-m/flight-management', views.flight_management, name='flight-management'),
     path('al-m/passengers', views.passengers, name='passengers'),
+    path('al-m/add-routes', views.add_routes, name='add-routes'),
     # Pilot
     path('pil/my-flights', views.my_flights, name='my-flights'),
     path('pil/flight-schedule-pilot', views.flight_schedule_pilot, name='flight-schedule-pilot'),

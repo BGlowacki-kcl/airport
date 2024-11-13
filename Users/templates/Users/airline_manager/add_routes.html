@@ -1,0 +1,93 @@
+{% extends 'Users/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<br><br>
+<h5> One more important step {{ user.username }}. Create airline to manage it!</h5>
+<hr><br>
+
+<div class="card bg-light shadow-md p-5">
+    <div class="card-body">
+        <div class="box border bg-white" style="min-height: 100px;" id="assigned-to">
+            <h3>Assigned to CanFlyTO</h3>
+            {% for airport_id in to_airports %}
+                <div class="airport" draggable="true" data-id="{{ airport_id }}" data-type="to">
+                    {{ airport_id.name }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="box border" id="available-to">
+            <h3>Available for CanFlyTO</h3>
+            {% for airport_id in available_to_airports %}
+                <div class="airport" draggable="true" data-id="{{ airport_id }}" data-type="to">
+                    {{ airport_id.name }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- CanFlyFROM Boxes -->
+        <div class="box border bg-white" style="min-height: 100px;" id="assigned-from">
+            <h3>Assigned to CanFlyFROM</h3>
+            {% for airport_id in from_airports %}
+                <div class="airport" draggable="true" data-id="{{ airport_id }}" data-type="from">
+                    {{ airport_id.name }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="box border" id="available-from">
+            <h3>Available for CanFlyFROM</h3>
+            {% for airport_id in available_from_airports %}
+                <div class="airport" draggable="true" data-id="{{ airport_id }}" data-type="from">
+                    {{ airport_id.name }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<br>
+<a href="{% url 'Users:dashboard' %}" class="btn btn-secondary" > Return </a> &nbsp;
+<br><br>
+
+<script>
+    const dragStart = (e) => {
+        e.dataTransfer.setData('text/plain', JSON.stringify({
+            id: e.target.getAttribute('data-id'),
+            type: e.target.getAttribute('data-type'),
+        }));
+    };
+
+    const drop = (e) => {
+        e.preventDefault();
+        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+        const target = e.target.closest('.box');
+        
+        if (!target) return;
+
+        const dropType = target.id.includes('to') ? 'to' : 'from';
+        
+        if (data.type !== dropType) return;
+
+        fetch('/update-airports/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+            body: JSON.stringify({ airport_id: data.id, action: target.id.includes('available') ? 'remove' : 'add', type: dropType })
+        }).then(response => {
+            if (response.ok) {
+                e.target.appendChild(document.querySelector(`.airport[data-id='${data.id}']`));
+            }
+        });
+    };
+
+    document.querySelectorAll('.airport').forEach(airport => {
+        airport.addEventListener('dragstart', dragStart);
+    });
+
+    document.querySelectorAll('.box').forEach(box => {
+        box.addEventListener('dragover', (e) => e.preventDefault());
+        box.addEventListener('drop', drop);
+    });
+</script>
+
+{% endblock %}

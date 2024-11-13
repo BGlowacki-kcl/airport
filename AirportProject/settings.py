@@ -30,7 +30,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['airport-kgl3.onrender.com']
+ALLOWED_HOSTS = []#'airport-kgl3.onrender.com', '127.0.0.1']
 
 
 # Application definition
@@ -98,23 +98,38 @@ WSGI_APPLICATION = "AirportProject.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 import os
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'airport',
+#         'USER': 'root',
+#         'PASSWORD': env('DB_PASSWORD'),
+#         'HOST': 'localhost', #'airport.cnkqmg08gi3q.us-east-1.rds.amazonaws.com',  # or the hostname where your MySQL server is running
+#         'PORT': '3306',      # or the port on which your MySQL server is listening
+#         # 'OPTIONS': {
+#         #     'ssl': {
+#         #         #'ca': os.path.join(os.path.dirname(__file__), 'us-east-1-bundle.pem'),  # Path to the RDS CA certificate
+#         #         'ca': '/etc/secrets/bundle.pem',  # Path to the RDS CA certificate
+#         #     }
+#         # }
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'airport',
-        'USER': 'root',
+        'NAME': 'defaultdb',
+        'USER': 'avnadmin',
         'PASSWORD': env('DB_PASSWORD'),
-        'HOST': 'airport.cnkqmg08gi3q.us-east-1.rds.amazonaws.com',  # or the hostname where your MySQL server is running
-        'PORT': '3306',      # or the port on which your MySQL server is listening
+        'HOST': 'airport-bglowacki-af4d.d.aivencloud.com',
+        'PORT': '19649',      # or the port on which your MySQL server is listening
         'OPTIONS': {
             'ssl': {
-                #'ca': os.path.join(os.path.dirname(__file__), 'us-east-1-bundle.pem'),  # Path to the RDS CA certificate
-                'ca': '/etc/secrets/bundle.pem',  # Path to the RDS CA certificate
+                'ca': os.path.join(os.path.dirname(__file__), 'certificate.pem'),  # Path to the RDS CA certificate
             }
-        }
+        },
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
