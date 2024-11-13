@@ -125,7 +125,8 @@ DATABASES = {
         'PORT': '19649',      # or the port on which your MySQL server is listening
         'OPTIONS': {
             'ssl': {
-                'ca': os.path.join(os.path.dirname(__file__), 'certificate.pem'),  # Path to the RDS CA certificate
+                #'ca': os.path.join(os.path.dirname(__file__), 'certificate.pem'),  # Path to the RDS CA certificate
+                'ca': '/etc/secrets/bundle.pem',
             }
         },
     }
