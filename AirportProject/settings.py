@@ -30,7 +30,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['airport-kgl3.onrender.com', '127.0.0.1']
+ALLOWED_HOSTS = ['airport-kgl3.onrender.com', '127.0.0.1', 'airport-bglowacki-af4d.d.aivencloud.com']
 
 
 # Application definition
@@ -125,8 +125,8 @@ DATABASES = {
         'PORT': '19649',      # or the port on which your MySQL server is listening
         'OPTIONS': {
             'ssl': {
-                #'ca': os.path.join(os.path.dirname(__file__), 'certificate.pem'),  # Path to the RDS CA certificate
-                'ca': '/etc/secrets/bundle.pem',
+                'ca': os.path.join(os.path.dirname(__file__), 'certificate.pem'),  # Path to the RDS CA certificate
+                #'ca': '/etc/secrets/bundle.pem',
             }
         },
     }
