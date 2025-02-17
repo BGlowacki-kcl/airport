@@ -28,7 +28,7 @@ environ.Env.read_env()
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['airport-kgl3.onrender.com', '127.0.0.1', 'airport-1.onrender.com']
 
